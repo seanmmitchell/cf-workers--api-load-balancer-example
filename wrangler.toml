@@ -1,0 +1,7 @@
+name = "tlb"
+main = "src/worker.ts"
+compatibility_date = "2023-11-16"
+
+kv_namespaces = [
+    { binding = "tlb", id = "55d180adc73d4012a1eda94eb8903866", preview_id = "21f6b5fa0bc04670b0c6cd2ae11064b6" }
+]
