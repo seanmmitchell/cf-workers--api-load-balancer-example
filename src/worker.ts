@@ -25,10 +25,19 @@ export default {
 				return new Response("Failed to determine request destination.", { status: 502 })
 			}
 
+			// Doesn't work as host header overrides seemingly are unsupported, but we can try. 🤷‍♂️
+			// https://community.cloudflare.com/t/allow-direct-ip-access-from-workers-and-all-headers-with-fetch/48240/2
+			const newHeaders = new Headers(request.headers);
+			if (routingDetails.host != undefined) {
+				console.log(JSON.stringify(newHeaders, null, 2));
+				
+				newHeaders.set('Host', routingDetails.host);
+			}
+
 			// Set Existing Request
 			const newRequest = new Request(routingDetails.origin, {
 				method: request.method,
-				headers: request.headers,
+				headers: newHeaders,
 				body: JSON.stringify(json),
 				redirect: request.redirect
 			});
@@ -61,4 +70,5 @@ declare global {
 
 export type RoutingDetails = {
 	origin: string
+	host: string | undefined
 }
